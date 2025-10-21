@@ -30,7 +30,7 @@ app.use((req,res,next)=>{
 const connecString = "mongodb+srv://imsanka11_db_user:m9B4F9771UcuSrkV@cluster0.ck2ukx5.mongodb.net/CBC_BATCH_07?retryWrites=true&w=majority&appName=Cluster0"
 
 mongoose.connect(connecString).then(()=>{
-    console.log("database is connected..");
+    console.log("database is connected...");
 
 app.use("/Student",StudentRouter);
 app.use("/User",UserRouter);
