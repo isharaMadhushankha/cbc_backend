@@ -95,3 +95,13 @@ export function isAdmin(req){
     }
     return true
 }
+
+export function iscustomer(req,res){
+    if(res.user == null){
+        return false
+    }
+    if(req.user.role != "user"){
+        return
+    }
+    return true
+}
