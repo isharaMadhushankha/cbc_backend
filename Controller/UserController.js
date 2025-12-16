@@ -2,6 +2,7 @@ import Usermodel from "../model/UserSchema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+
 export function createUser(req,res){
 const hashpassword = bcrypt.hashSync(req.body.password,10);
 
@@ -35,9 +36,7 @@ const hashpassword = bcrypt.hashSync(req.body.password,10);
 
     user.save().then(()=>{
         res.json({
-            message:"user add succesfully",
-         
-            
+            message:"user add succesfully"
         })
     }).catch(()=>{
         res.json({
@@ -66,12 +65,20 @@ export function login(req,res){
                         lastname:User.lastname,
                         role:User.role,
                         isEmailVerified:User.isEmailVerified
-                    },"jwt-secret"
+                    },process.env.JWT_SECRET
                 )
                 res.json({
                     message:"login successfully",
                     // Usermodel:User
-                    token:token
+                    token:token,
+                    User:{
+                        email:User.email,
+                        firstName:User.firstName,
+                        lastname:User.lastname,
+                        role:User.role,
+                        isEmailVerified:User.isEmailVerified,
+
+                    }
                  })
             }
             else{
