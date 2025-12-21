@@ -42,7 +42,7 @@ export async function CreateOrder(req,res){
             )
 
             const savedorder = await neworder.save();
-            savedorder =res.status(200).json({
+            res.status(200).json({
                 message:"order created successfully",
                 order:savedorder
             })
