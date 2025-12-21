@@ -6,6 +6,7 @@ import Jwt from "jsonwebtoken";
 import productRoute from "./Routes/ProductRoute.js";
 import cors from "cors"
 import dotenv from "dotenv"
+import OrderRouter from "./Routes/OrderRouter.js";
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ mongoose.connect(connecString).then(()=>{
 app.use("/api/Student",StudentRouter);
 app.use("/api/User",UserRouter);
 app.use("/api/Product",productRoute)
+app.use('/api/Orders',OrderRouter)
 
 }).catch(()=>{
     console.log("database is not connected");
