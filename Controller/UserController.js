@@ -4,22 +4,19 @@ import jwt from "jsonwebtoken";
 
 
 export function createUser(req,res){
-const hashpassword = bcrypt.hashSync(req.body.password,10);
+    const hashpassword = bcrypt.hashSync(req.body.password,10);
 
- const authHeader = req.headers.authorization;
- console.log(authHeader);
-
-    console.log(req.user);
     if(req.user==null){
         res.status(401).json({
             message:"please login and try again"
         })
+        return;
     }
     if(req.user.role !== "admin"){
         res.status(403).json({
-            message:"you are not allowd to create student"
+            message:"you are not allowed to create user"
         })
-        return
+        return;
     }
 
     const user = new Usermodel({
@@ -27,23 +24,41 @@ const hashpassword = bcrypt.hashSync(req.body.password,10);
         firstName:req.body.firstName,
         lastname:req.body.lastname,
         password:hashpassword,
-        role:req.body.role
-    
-    }
-        
-    )   
-   
+        role:req.body.role || "user"
+    })   
 
     user.save().then(()=>{
         res.json({
-            message:"user add succesfully"
+            message:"user added successfully"
         })
     }).catch(()=>{
-        res.json({
-            message:"user add not successfully"
+        res.status(500).json({
+            message:"failed to add user"
         })
     })
+}
 
+export function register(req, res) {
+    const hashpassword = bcrypt.hashSync(req.body.password, 10);
+
+    const user = new Usermodel({
+        email: req.body.email,
+        firstName: req.body.firstName,
+        lastname: req.body.lastname,
+        password: hashpassword,
+        role: "user" // Force role to user for public registration
+    });
+
+    user.save().then(() => {
+        res.json({
+            message: "Registration successful"
+        });
+    }).catch((err) => {
+        res.status(500).json({
+            message: "Registration failed",
+            error: err.message
+        });
+    });
 }
 
 export function login(req,res){
@@ -112,3 +127,33 @@ export function iscustomer(req,res){
     }
     return true
 }
+
+
+export function getUser(req,res){
+    if(req.user ==null){
+        res.status(401).json({
+            message:"please login and try again"
+            
+        })
+    }else{
+        res.json(req.user);
+        console.log(req);
+    }
+}
+
+export async function getAllUsers(req, res) {
+    if (!isAdmin(req)) {
+        res.status(403).json({
+            message: "You are not authorized to view all users"
+        });
+        return;
+    }
+    try {
+        const users = await Usermodel.find({}, { password: 0 }); // Exclude password
+        res.json(users);
+    } catch (err) {
+        res.status(500).json({
+            message: "Failed to retrieve users"
+        });
+    }
+}
