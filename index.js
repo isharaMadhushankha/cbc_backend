@@ -7,6 +7,8 @@ import productRoute from "./Routes/ProductRoute.js";
 import cors from "cors"
 import dotenv from "dotenv"
 import OrderRouter from "./Routes/OrderRouter.js";
+import InquiryRouter from "./Routes/InquiryRouter.js";
+import SystemConfigRouter from "./Routes/SystemConfigRouter.js";
 
 dotenv.config();
 
@@ -42,6 +44,8 @@ app.use("/api/Student",StudentRouter);
 app.use("/api/User",UserRouter);
 app.use("/api/Product",productRoute)
 app.use('/api/Orders',OrderRouter)
+app.use("/api/Inquiry", InquiryRouter);
+app.use("/api/SystemConfig", SystemConfigRouter);
 
 }).catch(()=>{
     console.log("database is not connected");

@@ -87,12 +87,12 @@ export function login(req,res){
                     // Usermodel:User
                     token:token,
                     User:{
+                        _id:User._id,
                         email:User.email,
                         firstName:User.firstName,
                         lastname:User.lastname,
                         role:User.role,
                         isEmailVerified:User.isEmailVerified,
-
                     }
                  })
             }
@@ -107,6 +107,44 @@ export function login(req,res){
 
 
 
+
+export function updateUser(req, res) {
+    const userId = req.params.id;
+    const updateData = {
+        firstName: req.body.firstName,
+        lastname: req.body.lastname,
+        image: req.body.image,
+        phone: req.body.phone,
+        address: req.body.address
+    };
+
+    Usermodel.findByIdAndUpdate(userId, updateData, { new: true })
+        .then((updatedUser) => {
+            if (!updatedUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            res.json({
+                message: "User updated successfully",
+                User: {
+                    _id: updatedUser._id,
+                    email: updatedUser.email,
+                    firstName: updatedUser.firstName,
+                    lastname: updatedUser.lastname,
+                    role: updatedUser.role,
+                    isEmailVerified: updatedUser.isEmailVerified,
+                    image: updatedUser.image,
+                    phone: updatedUser.phone,
+                    address: updatedUser.address
+                }
+            });
+        })
+        .catch((err) => {
+            res.status(500).json({
+                message: "Failed to update user",
+                error: err.message
+            });
+        });
+}
 
 export function isAdmin(req){
     if(req.user == null){
@@ -156,4 +194,59 @@ export async function getAllUsers(req, res) {
             message: "Failed to retrieve users"
         });
     }
-}
+}
+
+export async function toggleUserBlock(req, res) {
+    if (!isAdmin(req)) {
+        return res.status(403).json({ message: "Not authorized" });
+    }
+
+    try {
+        const user = await Usermodel.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Toggle the block status
+        user.isblock = !user.isblock;
+        await user.save();
+
+        res.json({
+            message: `User ${user.isblock ? "blocked" : "unblocked"} successfully`,
+            isblock: user.isblock
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "Failed to update user status",
+            error: err.message
+        });
+    }
+}
+
+export async function changePassword(req, res) {
+    const { currentPassword, newPassword } = req.body;
+    
+    if (!req.user) {
+        return res.status(401).json({ message: "Please login" });
+    }
+
+    try {
+        const user = await Usermodel.findOne({ email: req.user.email });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const isMatch = bcrypt.compareSync(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Current password is incorrect" });
+        }
+
+        user.password = bcrypt.hashSync(newPassword, 10);
+        await user.save();
+
+        res.json({ message: "Password updated successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to update password", error: error.message });
+    }
+}
+
