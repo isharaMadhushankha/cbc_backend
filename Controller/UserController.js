@@ -156,12 +156,12 @@ export function isAdmin(req){
     return true
 }
 
-export function iscustomer(req,res){
-    if(res.user == null){
+export function isCustomer(req){
+    if(req.user == null){
         return false
     }
     if(req.user.role != "user"){
-        return
+        return false
     }
     return true
 }

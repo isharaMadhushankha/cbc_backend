@@ -9,6 +9,8 @@ import dotenv from "dotenv"
 import OrderRouter from "./Routes/OrderRouter.js";
 import InquiryRouter from "./Routes/InquiryRouter.js";
 import SystemConfigRouter from "./Routes/SystemConfigRouter.js";
+import ConsultationRouter from "./Routes/ConsultationRouter.js";
+import SellerRouter from "./Routes/SellerRoute.js";
 
 dotenv.config();
 
@@ -46,6 +48,8 @@ app.use("/api/Product",productRoute)
 app.use('/api/Orders',OrderRouter)
 app.use("/api/Inquiry", InquiryRouter);
 app.use("/api/SystemConfig", SystemConfigRouter);
+app.use("/api/Consultation", ConsultationRouter);
+app.use("/api/Seller", SellerRouter);
 
 }).catch(()=>{
     console.log("database is not connected");

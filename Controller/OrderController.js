@@ -1,6 +1,6 @@
 import Order from "../model/Order.js";
 import Product from "../model/Product.js";
-import { isAdmin } from "./UserController.js";
+import { isAdmin, isCustomer } from "./UserController.js";
 
 export async function CreateOrder(req,res){
     //CBS0000001
@@ -175,7 +175,7 @@ export async function getotders(req,res) {
         const orders = await Order.find().sort({date:-1});
         res.json(orders);
     }else if(isCustomer(req)){
-        const orders = await Order.find({email:requser.email}).sort({date:-1});
+        const orders = await Order.find({email:req.user.email}).sort({date:-1});
         res.json(orders);
     }else{
         res.status(401).json({
