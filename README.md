@@ -1,8 +1,4 @@
-මෙන්න මචං, **CBC Cosmetics** ප්‍රොජෙක්ට් එකට ගැලපෙන, හැබැයි ඔයා ඉල්ලපු විදිහටම **System Architecture Diagram එකක් නැතිව**, පිරිසිදු සහ ඉතාමත් Clear විදිහට සකස් කරපු **`README.md`** ෆයිල් එක.
 
-මේක එකපාරින්ම කොපි කරගෙන ඔයාගේ GitHub එකට දාන්න:
-
-```markdown
 # 💄✨ CBC Cosmetics — Full-Stack E-Commerce Platform
 
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
@@ -15,7 +11,7 @@
 ---
 
 ## 🚀 Live Demo
-🌐 [Launch Live Application](https://your-deployment-link.com) *(Update with your Vercel / Render / Railway deployment link)*
+🌐 [Live Application](https://www.linkedin.com/posts/madhushankha-ishara_mern-reactjs-nodejs-activity-7460024543831695360-oPUA?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAD9sE14B2jNy3SWgFVdvdqlIazOWSIxri54)
 
 ---
 
@@ -172,7 +168,3 @@ npm run dev
 ## 📄 License
 
 Distributed under the MIT License. Built strictly as an academic/personal project reference.
-
-```
-
-```
